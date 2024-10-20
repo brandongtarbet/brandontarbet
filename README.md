@@ -1,3 +1,5 @@
+[Portfolio](portfolio.html)
+
 ## Summary
 Data analyst with an aptitude for problem solving, critical thinking, statistical analysis, and financial management.  Practiced in communicating with clients to reach a shared understanding for deliverables. Problem solver with ability to dive into data and find solutions by asking effective questions and leveraging powerful tools such as SQL, Power BI, and DAX to find elite solutions
 
