@@ -3,36 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main</title>
+    <title>Brandon Tarbet</title>
     <style>
-        /* Style for the body TEST*/
+        /* General styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            overflow: hidden;
+            position: relative;
+            height: 100vh;
+            background-color: #f8f8f8;
         }
 
-        /* Style for the main title */
+        /* Style for the header */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ccc;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Style for the title */
         h1 {
-            color: blue;
-            text-align: center;
-            margin-top: 20px;
+            color: darkgrey; /* Changed to dark grey */
+            margin: 0; /* Remove default margin */
         }
 
         /* Style for the navigation bar */
         nav {
-            background-color: #f0f0f0;
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
+            /* Navigation bar styles are already defined in the original code */
         }
 
-        /* Style for the tabs */
         nav ul {
             list-style-type: none;
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
         }
 
         nav ul li {
@@ -49,19 +60,163 @@
             display: inline-block;
         }
 
-        /* Style for hover effect on the tabs */
         nav ul li a:hover {
             background-color: #e0e0e0;
+        }
+
+        /* Style for the transparent text box */
+        .text-box {
+            position: absolute;
+            top: 70px; /* Positioning below the header */
+            left: 20px; /* Whitespace from the left */
+            width: 300px; /* Width of the text box */
+            height: 400px; /* Height of the text box */
+            background-color: rgba(255, 255, 255, 0.8); /* White with transparency */
+            border: 2px solid #ccc; /* Border for the text box */
+            border-radius: 5px; /* Rounded corners */
+            padding: 10px; /* Padding inside the text box */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+            z-index: 1; /* Bring to the front */
+        }
+
+        /* Style for floating circles */
+        .circle {
+            position: absolute;
+            border: 2px solid grey;
+            border-radius: 50%;
+            background-color: transparent;
+            opacity: 0.6;
+            animation: float 20s infinite;
+            transition: transform 0.5s, left 0.5s, top 0.5s;
+        }
+
+        /* Specific styles for the blue circle */
+        .blue-circle {
+            border-color: blue;
+        }
+
+        /* Animation for floating circles */
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            50% {
+                transform: translateY(-50px) translateX(50px);
+            }
+            100% {
+                transform: translateY(0) translateX(0);
+            }
         }
     </style>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="page2.html">Page 2</a></li>
-            <li><a href="page3.html">Page 3</a></li>
-        </ul>
-    </nav>
-    <h1>Main TEST</h1>
+    <header>
+        <h1>Brandon Tarbet</h1> <!-- Title updated -->
+        <nav>
+            <ul>
+                <li><a href="page2.html">Page 2</a></li>
+                <li><a href="page3.html">Page 3</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Transparent text box -->
+    <div class="text-box"></div>
+
+    <!-- JavaScript to create and animate circles -->
+    <script>
+        // Function to create floating circles
+        function createCircle(isBlueCircle = false) {
+            const circle = document.createElement('div');
+            circle.className = 'circle';
+            if (isBlueCircle) {
+                circle.classList.add('blue-circle'); // Add blue outline for this circle
+                circle.addEventListener('click', () => {
+                    window.location.href = 'page2.html'; // Navigate to Page 2 on click
+                });
+            }
+
+            // Set random size and position
+            const size = Math.random() * 50 + 30; // Random size between 30px and 80px
+            circle.style.width = `${size}px`;
+            circle.style.height = `${size}px`;
+            positionCircle(circle); // Ensure circle is positioned outside the text box
+
+            // Set random animation duration and delay
+            circle.style.animationDuration = `${Math.random() * 10 + 10}s`; // Duration between 10s and 20s
+            circle.style.animationDelay = `${Math.random() * 5}s`; // Delay up to 5s
+
+            // Add event listener for mouse hover (if it's not the blue circle)
+            if (!isBlueCircle) {
+                circle.addEventListener('mouseenter', (e) => moveAwayFromCursor(e, circle));
+            }
+
+            document.body.appendChild(circle);
+        }
+
+        // Function to position the circle randomly, ensuring it does not overlap with the text box
+        function positionCircle(circle) {
+            const box = document.querySelector('.text-box');
+            const boxRect = box.getBoundingClientRect();
+            let left, top;
+
+            do {
+                left = Math.random() * (window.innerWidth - parseFloat(circle.style.width));
+                top = Math.random() * (window.innerHeight - parseFloat(circle.style.height));
+            } while (
+                // Ensure the circle does not overlap the text box
+                !(left + parseFloat(circle.style.width) < boxRect.left || // Left side
+                  left > boxRect.right || // Right side
+                  top + parseFloat(circle.style.height) < boxRect.top || // Top side
+                  top > boxRect.bottom) // Bottom side
+            );
+
+            circle.style.top = `${top}px`;
+            circle.style.left = `${left}px`;
+        }
+
+        // Function to move the circle away from the cursor
+        function moveAwayFromCursor(event, circle) {
+            const rect = circle.getBoundingClientRect();
+            const circleCenterX = rect.left + rect.width / 2;
+            const circleCenterY = rect.top + rect.height / 2;
+
+            // Calculate the distance from the cursor to the circle center
+            const deltaX = circleCenterX - event.clientX;
+            const deltaY = circleCenterY - event.clientY;
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+            // Only move the circle if the cursor is within a larger radius (100px)
+            if (distance < 100) {
+                // Set the new position based on the direction, increasing speed
+                const newX = parseFloat(circle.style.left) + deltaX / 3; // Increase movement speed
+                const newY = parseFloat(circle.style.top) + deltaY / 3;
+
+                // Ensure circles do not move behind the text box
+                const box = document.querySelector('.text-box');
+                const boxRect = box.getBoundingClientRect();
+
+                // Check for collision with the text box
+                if (newX + rect.width > boxRect.left && newX < boxRect.right &&
+                    newY + rect.height > boxRect.top && newY < boxRect.bottom) {
+                    if (deltaX > 0) newX = boxRect.right; // Move right
+                    else newX = boxRect.left - rect.width; // Move left
+                    if (deltaY > 0) newY = boxRect.bottom; // Move down
+                    else newY = boxRect.top - rect.height; // Move up
+                }
+
+                // Apply new position within the bounds of the screen
+                circle.style.left = `${Math.max(0, Math.min(window.innerWidth - rect.width, newX))}px`;
+                circle.style.top = `${Math.max(0, Math.min(window.innerHeight - rect.height, newY))}px`;
+            }
+        }
+
+        // Create multiple circles, with one being the blue circle
+        const totalCircles = 30; // Increase the number of circles
+        for (let i = 0; i < totalCircles - 1; i++) {
+            createCircle();
+        }
+        createCircle(true); // Create the blue circle
+    </script>
 </body>
 </html>
