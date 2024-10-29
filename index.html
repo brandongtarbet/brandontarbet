@@ -111,19 +111,58 @@
             z-index: 0;
         }
 
-        /* MAKE CHANGES HERE */
-        /* Styles for Box 1 with the image */
-        .box1 {
+        /* Square container styles */
+        .squares-container {
             position: absolute;
-            top: 20%; /* Adjust top position */
-            left: 10%; /* Adjust left position */
-            width: 200px; /* Set width of the box */
-            height: 200px; /* Set height of the box */
-            background-image: url('your-image.jpg'); /* Replace 'your-image.jpg' with the actual path to your image */
-            background-size: cover;
-            background-position: center;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 150px;
+            z-index: 3;
+        }
+
+        .square {
+            background-color: rgb(70, 70, 70);
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            height: 300px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            z-index: 3;
+        }
+
+        .square:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .small-square {
+            background-color: rgba(255, 255, 255, 0.7);
             border-radius: 8px;
-            z-index: 1;
+            height: 150px;
+            width: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .number {
+            margin-top: 10px;
+            font-size: 20px;
+            color: white;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -140,17 +179,40 @@
             <span class="line"></span>
         </div>
         <ul id="nav-links">
-            <li><a href="portfolio.html">Home</a></li>
+            <li><a href="resume.html">Resume</a></li>
             <li><a href="page3.html">Page 3</a></li>
         </ul>
     </div>
 
-    <!-- MAKE CHANGES HERE -->
-    <!-- Box 1 with an image -->
-    <div class="box1"></div>
-
-    <!-- Network Background Container -->
+    <!-- Neural Network Background -->
     <div class="network-background"></div>
+
+    <div class="squares-container">
+        <div class="square">
+            <div class="small-square"></div>
+            <div class="number">1</div>
+        </div>
+        <div class="square">
+            <div class="small-square"></div>
+            <div class="number">2</div>
+        </div>
+        <div class="square">
+            <div class="small-square"></div>
+            <div class="number">3</div>
+        </div>
+        <div class="square">
+            <div class="small-square"></div>
+            <div class="number">4</div>
+        </div>
+        <div class="square">
+            <div class="small-square"></div>
+            <div class="number">5</div>
+        </div>
+        <div class="square">
+            <div class="small-square"></div>
+            <div class="number">6</div>
+        </div>
+    </div>
 
     <script>
         let panelCollapsed = true;
