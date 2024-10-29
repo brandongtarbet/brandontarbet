@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brandon Tarbet - Resume</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+            height: 100vh;
+            background-color: #ffffff;
+        }
+
+        /* Header styles */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;  
+            padding: 10px 20px;
+            z-index: 1;
+            position: relative;
+        }
+
+        h1 {
+            color: black;
+            margin: 0;
+        }
+
+        /* Navigation panel */
+        .nav-panel {
+            position: absolute;
+            top: 65px;
+            left: 0;
+            width: 50px;
+            height: calc(100vh - 65px);
+            background-color: rgb(70, 70, 70);
+            border-right: 2px solid #ccc;
+            border-top: 2px solid #ccc;
+            border-radius: 0 10px 0 0;
+            padding: 10px;
+            transition: width 0.3s ease;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        /* Hamburger icon */
+        .hamburger {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .line {
+            display: block;
+            height: 4px;
+            background-color: white;
+            margin: 4px 0;
+            border-radius: 2px;
+        }
+
+        /* Navigation links */
+        .nav-panel ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: none;
+            text-align: right;
+        }
+
+        .nav-panel ul li {
+            margin: 10px 0;
+        }
+
+        .nav-panel ul li a {
+            text-decoration: none;
+            color: white;
+            padding: 10px;
+            border-radius: 3px;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        .nav-panel ul li a:hover {
+            background-color: rgb(90, 90, 90);
+        }
+
+        /* PDF Embed styles */
+        .pdf-container {
+            position: absolute;
+            top: 80px; /* Adjust to position below the header */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%; /* Adjust width as needed */
+            height: calc(100vh - 80px); /* Adjust height as needed */
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            overflow-y: auto; /* Enable vertical scrolling */
+            z-index: 1;
+        }
+
+        /* Canvas styles for PDF.js */
+        .pdf-canvas {
+            display: block;
+            margin: auto;
+            background: white;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Brandon Tarbet</h1>
+    </header>
+
+    <!-- Navigation panel -->
+    <div class="nav-panel">
+        <div class="hamburger" onclick="togglePanel()">
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+        </div>
+        <ul id="nav-links">
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="page3.html">Page 3</a></li>
+        </ul>
+    </div>
+
+    <!-- PDF Embed Section -->
+    <div class="pdf-container" id="pdf-container">
+        <!-- PDF.js will render here -->
+    </div>
+
+    <!-- PDF.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <script>
+        const url = 'https://raw.githubusercontent.com/brandongtarbet/brandontarbet/main/Tarbet_Brandon_Resume.pdf'; // Replace with your actual raw URL
+
+        const pdfContainer = document.getElementById('pdf-container');
+
+        // Load the PDF
+        pdfjsLib.getDocument(url).promise.then(pdf => {
+            const totalPages = pdf.numPages;
+            const containerWidth = pdfContainer.clientWidth; // Get the width of the container
+
+            for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+                pdf.getPage(pageNum).then(page => {
+                    const viewport = page.getViewport({ scale: 1 }); // Get the viewport at 1x scale
+                    const scale = containerWidth / viewport.width; // Calculate scale to fit width
+                    const scaledViewport = page.getViewport({ scale: scale }); // Get the viewport with the new scale
+
+                    const canvas = document.createElement('canvas');
+                    canvas.className = 'pdf-canvas';
+                    pdfContainer.appendChild(canvas);
+
+                    const context = canvas.getContext('2d');
+                    canvas.height = scaledViewport.height;
+                    canvas.width = scaledViewport.width;
+
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: scaledViewport,
+                    };
+                    page.render(renderContext);
+                });
+            }
+        }).catch(err => {
+            console.error('Error loading PDF: ', err);
+        });
+
+        let panelCollapsed = true;
+
+        // Toggle navigation panel visibility
+        function togglePanel() {
+            const panel = document.querySelector('.nav-panel');
+            const links = document.getElementById('nav-links');
+
+            if (panelCollapsed) {
+                panel.style.width = '200px';
+                links.style.display = 'block';
+            } else {
+                panel.style.width = '50px';
+                links.style.display = 'none';
+            }
+            panelCollapsed = !panelCollapsed;
+        }
+    </script>
+</body>
+</html>

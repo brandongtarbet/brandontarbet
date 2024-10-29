@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brandon Tarbet</title>
+    <title>Brandon Tarbet - Neural Network Background</title>
     <style>
         /* General styles */
         body {
@@ -13,210 +13,309 @@
             overflow: hidden;
             position: relative;
             height: 100vh;
-            background-color: #f8f8f8;
+            background-color: #ffffff;
         }
 
-        /* Style for the header */
+        /* Header styles */
         header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            background-color: #f0f0f0;
+            justify-content: space-between;  
             padding: 10px 20px;
-            border-bottom: 1px solid #ccc;
-            position: relative;
             z-index: 1;
+            position: relative;
         }
 
-        /* Style for the title */
         h1 {
-            color: darkgrey; /* Changed to dark grey */
-            margin: 0; /* Remove default margin */
+            color: black;
+            margin: 0;
         }
 
-        /* Style for the navigation bar */
-        nav {
-            /* Navigation bar styles are already defined in the original code */
+        /* Navigation panel */
+        .nav-panel {
+            position: absolute;
+            top: 65px;
+            left: 0;
+            width: 50px;
+            height: calc(100vh - 65px);
+            background-color: rgb(70, 70, 70);
+            border-right: 2px solid #ccc;
+            border-top: 2px solid #ccc;
+            border-radius: 0 10px 0 0;
+            padding: 10px;
+            transition: width 0.3s ease;
+            overflow: hidden;
+            z-index: 2;
         }
 
-        nav ul {
+        /* Hamburger icon */
+        .hamburger {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .line {
+            display: block;
+            height: 4px;
+            background-color: white;
+            margin: 4px 0;
+            border-radius: 2px;
+        }
+
+        /* Navigation links */
+        .nav-panel ul {
             list-style-type: none;
             margin: 0;
             padding: 0;
-            display: flex;
+            display: none;
+            text-align: right;
         }
 
-        nav ul li {
-            margin: 0 10px;
+        .nav-panel ul li {
+            margin: 10px 0;
         }
 
-        nav ul li a {
+        .nav-panel ul li a {
             text-decoration: none;
-            color: black;
-            padding: 10px 15px;
-            border: 1px solid #ccc;
+            color: white;
+            padding: 10px;
             border-radius: 3px;
-            background-color: white;
             display: inline-block;
+            transition: background-color 0.3s;
         }
 
-        nav ul li a:hover {
-            background-color: #e0e0e0;
+        .nav-panel ul li a:hover {
+            background-color: rgb(90, 90, 90);
         }
 
-        /* Style for the transparent text box */
-        .text-box {
+        /* Network background container */
+        .network-background {
             position: absolute;
-            top: 70px; /* Positioning below the header */
-            left: 20px; /* Whitespace from the left */
-            width: 300px; /* Width of the text box */
-            height: 400px; /* Height of the text box */
-            background-color: rgba(255, 255, 255, 0.8); /* White with transparency */
-            border: 2px solid #ccc; /* Border for the text box */
-            border-radius: 5px; /* Rounded corners */
-            padding: 10px; /* Padding inside the text box */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
-            z-index: 1; /* Bring to the front */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
         }
 
-        /* Style for floating circles */
-        .circle {
+        /* Dot styles */
+        .dot {
             position: absolute;
-            border: 2px solid grey;
+            width: 8px; /* Increased size for better visibility */
+            height: 8px; /* Increased size for better visibility */
+            background-color: #333;
             border-radius: 50%;
-            background-color: transparent;
-            opacity: 0.6;
-            animation: float 20s infinite;
-            transition: transform 0.5s, left 0.5s, top 0.5s;
+            z-index: 0;
+            transition: box-shadow 0.3s;
         }
 
-        /* Specific styles for the blue circle */
-        .blue-circle {
-            border-color: blue;
+        /* Glowing effect */
+        .dot.hover {
+            background-color: blue;
+            box-shadow: 0 0 15px blue, 0 0 30px blue;
         }
 
-        /* Animation for floating circles */
-        @keyframes float {
-            0% {
-                transform: translateY(0) translateX(0);
-            }
-            50% {
-                transform: translateY(-50px) translateX(50px);
-            }
-            100% {
-                transform: translateY(0) translateX(0);
-            }
+        /* Square container styles */
+        .squares-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 150px;
+            z-index: 3;
+        }
+
+        .square {
+            background-color: rgb(70, 70, 70);
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            height: 300px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            z-index: 3;
+        }
+
+        .square:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .small-square {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            height: 150px;
+            width: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .number {
+            margin-top: 10px;
+            font-size: 20px;
+            color: white;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Brandon Tarbet</h1> <!-- Title updated -->
-        <nav>
-            <ul>
-                <li><a href="page2.html">Page 2</a></li>
-                <li><a href="page3.html">Page 3</a></li>
-            </ul>
-        </nav>
+        <h1>Brandon Tarbet</h1>
     </header>
 
-    <!-- Transparent text box -->
-    <div class="text-box"></div>
+    <!-- Navigation panel -->
+    <div class="nav-panel">
+        <div class="hamburger" onclick="togglePanel()">
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+        </div>
+        <ul id="nav-links">
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="page3.html">Page 3</a></li>
+        </ul>
+    </div>
 
-    <!-- JavaScript to create and animate circles -->
+    <!-- Neural Network Background -->
+    <div class="network-background"></div>
+
+    <div class="squares-container">
+        <div class="square">
+            <div class="small-square"></div>
+            <div class="number">1</div>
+        </div>
+        <div class="square">
+            <div class="small-square"></div>
+            <div class="number">2</div>
+        </div>
+        <div class="square">
+            <div class="small-square"></div>
+            <div class="number">3</div>
+        </div>
+        <div class="square">
+            <div class="small-square"></div>
+            <div class="number">4</div>
+        </div>
+        <div class="square">
+            <div class="small-square"></div>
+            <div class="number">5</div>
+        </div>
+        <div class="square">
+            <div class="small-square"></div>
+            <div class="number">6</div>
+        </div>
+    </div>
+
     <script>
-        // Function to create floating circles
-        function createCircle(isBlueCircle = false) {
-            const circle = document.createElement('div');
-            circle.className = 'circle';
-            if (isBlueCircle) {
-                circle.classList.add('blue-circle'); // Add blue outline for this circle
-                circle.addEventListener('click', () => {
-                    window.location.href = 'page2.html'; // Navigate to Page 2 on click
+        let panelCollapsed = true;
+
+        // Toggle navigation panel visibility
+        function togglePanel() {
+            const panel = document.querySelector('.nav-panel');
+            const links = document.getElementById('nav-links');
+
+            if (panelCollapsed) {
+                panel.style.width = '200px';
+                links.style.display = 'block';
+            } else {
+                panel.style.width = '50px';
+                links.style.display = 'none';
+            }
+            panelCollapsed = !panelCollapsed;
+        }
+
+        // Neural Network Background
+        const numDots = 200; // Number of dots
+        const maxLineDistance = 150;
+        const dots = [];
+        const background = document.querySelector('.network-background');
+
+        for (let i = 0; i < numDots; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+
+            // Spread dots evenly across the screen
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+
+            dot.style.left = `${x}px`;
+            dot.style.top = `${y}px`;
+            background.appendChild(dot);
+            dots.push(dot);
+
+            // Add hover effect for each dot
+            dot.addEventListener('mouseover', () => {
+                dot.classList.add('hover');
+                drawConnections(); // Redraw connections on hover
+            });
+
+            dot.addEventListener('mouseout', () => {
+                dot.classList.remove('hover');
+                drawConnections(); // Redraw connections to remove glow
+            });
+        }
+
+        // Initial draw of connections
+        drawConnections();
+
+        function drawConnections() {
+            const canvas = document.createElement('canvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            canvas.style.position = 'absolute';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            background.appendChild(canvas);
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            dots.forEach((dot1, index) => {
+                dots.slice(index + 1).forEach(dot2 => {
+                    const x1 = parseFloat(dot1.style.left);
+                    const y1 = parseFloat(dot1.style.top);
+                    const x2 = parseFloat(dot2.style.left);
+                    const y2 = parseFloat(dot2.style.top);
+
+                    const distance = Math.hypot(x1 - x2, y1 - y2);
+                    if (distance < maxLineDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.strokeStyle = 'rgba(51, 51, 51, 0.5)'; // Default line color
+                        ctx.lineWidth = 1;
+
+                        // Check if either dot is hovered
+                        if (dot1.classList.contains('hover') || dot2.classList.contains('hover')) {
+                            ctx.strokeStyle = 'blue'; // Change line color on hover
+                            ctx.lineWidth = 2; // Thicker line on hover
+                        }
+
+                        ctx.stroke();
+                    }
                 });
-            }
-
-            // Set random size and position
-            const size = Math.random() * 50 + 30; // Random size between 30px and 80px
-            circle.style.width = `${size}px`;
-            circle.style.height = `${size}px`;
-            positionCircle(circle); // Ensure circle is positioned outside the text box
-
-            // Set random animation duration and delay
-            circle.style.animationDuration = `${Math.random() * 10 + 10}s`; // Duration between 10s and 20s
-            circle.style.animationDelay = `${Math.random() * 5}s`; // Delay up to 5s
-
-            // Add event listener for mouse hover (if it's not the blue circle)
-            if (!isBlueCircle) {
-                circle.addEventListener('mouseenter', (e) => moveAwayFromCursor(e, circle));
-            }
-
-            document.body.appendChild(circle);
+            });
         }
 
-        // Function to position the circle randomly, ensuring it does not overlap with the text box
-        function positionCircle(circle) {
-            const box = document.querySelector('.text-box');
-            const boxRect = box.getBoundingClientRect();
-            let left, top;
-
-            do {
-                left = Math.random() * (window.innerWidth - parseFloat(circle.style.width));
-                top = Math.random() * (window.innerHeight - parseFloat(circle.style.height));
-            } while (
-                // Ensure the circle does not overlap the text box
-                !(left + parseFloat(circle.style.width) < boxRect.left || // Left side
-                  left > boxRect.right || // Right side
-                  top + parseFloat(circle.style.height) < boxRect.top || // Top side
-                  top > boxRect.bottom) // Bottom side
-            );
-
-            circle.style.top = `${top}px`;
-            circle.style.left = `${left}px`;
-        }
-
-        // Function to move the circle away from the cursor
-        function moveAwayFromCursor(event, circle) {
-            const rect = circle.getBoundingClientRect();
-            const circleCenterX = rect.left + rect.width / 2;
-            const circleCenterY = rect.top + rect.height / 2;
-
-            // Calculate the distance from the cursor to the circle center
-            const deltaX = circleCenterX - event.clientX;
-            const deltaY = circleCenterY - event.clientY;
-            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-            // Only move the circle if the cursor is within a larger radius (100px)
-            if (distance < 100) {
-                // Set the new position based on the direction, increasing speed
-                const newX = parseFloat(circle.style.left) + deltaX / 3; // Increase movement speed
-                const newY = parseFloat(circle.style.top) + deltaY / 3;
-
-                // Ensure circles do not move behind the text box
-                const box = document.querySelector('.text-box');
-                const boxRect = box.getBoundingClientRect();
-
-                // Check for collision with the text box
-                if (newX + rect.width > boxRect.left && newX < boxRect.right &&
-                    newY + rect.height > boxRect.top && newY < boxRect.bottom) {
-                    if (deltaX > 0) newX = boxRect.right; // Move right
-                    else newX = boxRect.left - rect.width; // Move left
-                    if (deltaY > 0) newY = boxRect.bottom; // Move down
-                    else newY = boxRect.top - rect.height; // Move up
-                }
-
-                // Apply new position within the bounds of the screen
-                circle.style.left = `${Math.max(0, Math.min(window.innerWidth - rect.width, newX))}px`;
-                circle.style.top = `${Math.max(0, Math.min(window.innerHeight - rect.height, newY))}px`;
-            }
-        }
-
-        // Create multiple circles, with one being the blue circle
-        const totalCircles = 30; // Increase the number of circles
-        for (let i = 0; i < totalCircles - 1; i++) {
-            createCircle();
-        }
-        createCircle(true); // Create the blue circle
+        // Redraw lines on window resize
+        window.addEventListener('resize', () => {
+            background.querySelector('canvas').remove();
+            drawConnections();
+        });
     </script>
 </body>
 </html>
